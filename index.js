@@ -22,6 +22,11 @@ app.get("/", async (req, res) => {
     res.send("home page")
 })
 
+app.get("/about", async (req, res) => {
+    
+    res.send("about page")
+})
+
 
 
 
