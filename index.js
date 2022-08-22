@@ -9,6 +9,7 @@ const authentication = require("./middlewares/authentication")
 require('dotenv').config()
 
 const app = express();
+let PORT = process.env.PORT || 8000
 
 app.use(express.json())
 app.use(cors())
@@ -24,7 +25,7 @@ app.use(authentication)
 app.use("/notes", notesController)
 
 
-app.listen(process.env.PORT, async () => {
+app.listen(PORT, async () => {
     try{
         await connection
         console.log("db connnected")
@@ -33,6 +34,6 @@ app.listen(process.env.PORT, async () => {
         console.log("error connecting to db")
         console.log(err)
     }
-    console.log(`listening on port ${process.env.PORT}`)
+    console.log(`listening on port ${PORT}`)
 })
 
