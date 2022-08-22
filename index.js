@@ -1,38 +1,30 @@
 const express = require("express")
-
-require('dotenv').config()
 const cors = require("cors")
 const connection = require("./config/db")
-const DataModel = require("./models/Data.model")
 
+
+const userController = require("./routes/user.routes")
+const notesController = require("./routes/notes.routes")
+const authentication = require("./middlewares/authentication")
+require('dotenv').config()
 
 const app = express();
-const PORT = process.env.PORT || 8000
+
 app.use(express.json())
 app.use(cors())
 
-
-app.get("/", async (req, res) => {
-    let {name} = req.query
-    let data = new DataModel({
-        name
-    })
-
-    await data.save()
+app.get("/", (req, res) => {
     res.send("home page")
 })
 
-app.get("/about", async (req, res) => {
-    
-    res.send("about page")
-})
+app.use("/user", userController)
 
 
+app.use(authentication)
+app.use("/notes", notesController)
 
 
-
-
-app.listen(PORT, async () => {
+app.listen(process.env.PORT, async () => {
     try{
         await connection
         console.log("db connnected")
@@ -41,6 +33,6 @@ app.listen(PORT, async () => {
         console.log("error connecting to db")
         console.log(err)
     }
-    console.log(`listening on port ${PORT}`)
+    console.log(`listening on port ${process.env.PORT}`)
 })
 
